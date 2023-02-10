@@ -1,4 +1,4 @@
-import { coordInDirection, isOutside } from "../functions/BoardFunctions";
+import { coordInDirection, isOutside, isSnakePart } from "../functions/BoardFunctions";
 import { Direction, Outcome } from "../types/strategy";
 import { DirectionResult, Strategy } from "../types/strategyTypes";
 import { GameState, MoveResponse } from "../types/types";
@@ -12,11 +12,12 @@ export class BasicStrategy implements Strategy {
     const directionResults: Array<DirectionResult> = Object.values(Direction).map((direction: Direction) => {
       const nextCoord = coordInDirection(head, direction);
       const isOutofBounds = isOutside(nextCoord, gameState.board);
+      const dontTreadOnSelf = isSnakePart(nextCoord, gameState.board);
       // Check that you don't collide with any snake
       // Add more checks if needed
       
       let outcome = Outcome.ALIVE
-      if (isOutofBounds) {
+      if (isOutofBounds || dontTreadOnSelf) {
         outcome = Outcome.DEAD
       }
 
