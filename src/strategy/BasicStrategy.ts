@@ -28,6 +28,9 @@ export class BasicStrategy implements Strategy {
         otherData -= distance(nextCoord, food);
       }
       otherData += fuckAroundAndFindOut(nextCoord, gameState.you, gameState.board);
+      if (reachableCells(gameState.board, nextCoord) < gameState.you.length){
+        otherData -= 3;
+      }
       // otherData += boxing(nextCoord, gameState.you, gameState.board);
       // Collect data to use for sorting
       
