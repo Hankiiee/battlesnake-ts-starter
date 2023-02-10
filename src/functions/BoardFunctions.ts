@@ -36,7 +36,7 @@ export function fuckAroundAndFindOut(mySnake: Battlesnake, nextCoord: Coord, boa
   getEnemySnakes(board).forEach(snake => {
     if (!sameCoord(mySnake.head, snake.head)){
       if(distance(nextCoord,snake.head) == 1){
-        if(snake.length > mySnake.length)
+        if(snake.length < mySnake.length)
           trigger = 1000;
         else 
           trigger =-1000;
