@@ -1,4 +1,4 @@
-import { closestFood, coordInDirection, distance, fuckAroundAndFindOut, isOutside, isSnakePart } from "../functions/BoardFunctions";
+import { boxing, closestFood, coordInDirection, distance, fuckAroundAndFindOut, isOutside, isSnakePart } from "../functions/BoardFunctions";
 import { reachableCells } from "../functions/ReachableCells";
 import { Direction, Outcome } from "../types/strategy";
 import { DirectionResult, Strategy } from "../types/strategyTypes";
@@ -27,7 +27,8 @@ export class BasicStrategy implements Strategy {
       if (food){
         otherData -= distance(nextCoord, food);
       }
-      otherData += fuckAroundAndFindOut(gameState.you, nextCoord, gameState.board);
+      // otherData += fuckAroundAndFindOut(nextCoord, gameState.you, gameState.board);
+      otherData += boxing(nextCoord, gameState.you, gameState.board);
       // Collect data to use for sorting
       
 

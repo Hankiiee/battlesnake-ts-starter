@@ -1,5 +1,6 @@
 import { Direction } from "../types/strategy";
 import { Battlesnake, Board, Coord } from "../types/types";
+import { reachableCells } from "./ReachableCells";
 
 export function coordInDirection(start: Coord, direction: Direction): Coord {
   switch (direction) {
@@ -31,19 +32,62 @@ export function getEnemySnakeLength(board: Board): number[] {
   });
   return lengths; 
 }
-export function fuckAroundAndFindOut(mySnake: Battlesnake, nextCoord: Coord, board: Board): number {
+export function fuckAroundAndFindOut(nextCoord: Coord, mySnake: Battlesnake, board: Board): number {
   let trigger: number = 0;
   getEnemySnakes(board).forEach(snake => {
     if (!sameCoord(mySnake.head, snake.head)){
       if(distance(nextCoord,snake.head) == 1){
         if(snake.length < mySnake.length)
-          trigger = 1000;
+          trigger = 2;
         else 
-          trigger =-1000;
+          trigger =-snake.length;
       }
     };
   });
   return trigger; 
+}
+
+export function boxing(nextCoord: Coord, mySnake: Battlesnake, board: Board): number{
+  let points = 0;
+  const newBoard = fakeBoard(nextCoord,mySnake,board);
+  const length: number[] = [];
+  const points1: number[] = [];
+  const points2: number[] = [];
+  board.snakes.forEach(snake => {
+    if (!sameCoord(mySnake.head, snake.head)){
+      length.push(snake.length)
+      points1.push(reachableCells(board, snake.head))
+    }
+  }
+  );
+  newBoard.snakes.forEach(snake => {
+    if (!sameCoord(mySnake.head, snake.head)){
+      points2.push(reachableCells(newBoard, snake.head))
+    }
+  }
+  );
+  for(let i = 0; i < points1.length; i++) {
+    if(points1[i] - points2[i] < length[i] -1){
+      points += (points1[i] - points2[i] - length[i]);
+    }
+  }
+  return points;
+}
+
+export function fakeBoard(nextCoord: Coord, mySnake: Battlesnake, board: Board): Board{
+  const newBoard = board;
+  const snakes: Battlesnake[] = [];
+  board.snakes.forEach(snake => {
+    if(!sameCoord(snake.head, mySnake.head)){
+      snakes.push(snake)
+    }
+  });
+  const modifiedSnake = mySnake;
+  modifiedSnake.body.pop
+  modifiedSnake.body.push(nextCoord)
+  snakes.push(modifiedSnake)
+  newBoard.snakes = snakes;
+  return newBoard;
 }
 
 export function isOutside(coord: Coord, board: Board): boolean {
