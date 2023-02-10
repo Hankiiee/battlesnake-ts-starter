@@ -47,32 +47,32 @@ export function fuckAroundAndFindOut(nextCoord: Coord, mySnake: Battlesnake, boa
   return trigger; 
 }
 
-// export function boxing(nextCoord: Coord, mySnake: Battlesnake, board: Board): number{
-//   let points = 0;
-//   const newBoard = fakeBoard(nextCoord,mySnake,board);
-//   const length: number[] = [];
-//   const points1: number[] = [];
-//   const points2: number[] = [];
-//   board.snakes.forEach(snake => {
-//     if (!sameCoord(mySnake.head, snake.head)){
-//       length.push(snake.length)
-//       points1.push(reachableCells(board, snake.head))
-//     }
-//   }
-//   );
-//   newBoard.snakes.forEach(snake => {
-//     if (!sameCoord(mySnake.head, snake.head)){
-//       points2.push(reachableCells(newBoard, snake.head))
-//     }
-//   }
-//   );
-//   for(let i = 0; i < points1.length; i++) {
-//     if(points1[i] - points2[i] < length[i] -1){
-//       points += (points1[i] - points2[i] - length[i]);
-//     }
-//   }
-//   return points;
-// }
+export function boxing(nextCoord: Coord, mySnake: Battlesnake, board: Board): number{
+  let points = 0;
+  const newBoard = fakeBoard(nextCoord,mySnake,board);
+  const length: number[] = [];
+  const points1: number[] = [];
+  const points2: number[] = [];
+  board.snakes.forEach(snake => {
+    if (!sameCoord(mySnake.head, snake.head)){
+      length.push(snake.length)
+      points1.push(reachableCells(board, snake.head))
+    }
+  }
+  );
+  newBoard.snakes.forEach(snake => {
+    if (!sameCoord(mySnake.head, snake.head)){
+      points2.push(reachableCells(newBoard, snake.head))
+    }
+  }
+  );
+  for(let i = 0; i < points1.length; i++) {
+    if(points1[i] - points2[i] < length[i] -1){
+      points += (points1[i] - points2[i] - length[i]);
+    }
+  }
+  return points;
+}
 
 export function fakeBoard(nextCoord: Coord, mySnake: Battlesnake, board: Board): Board{
   const newBoard = JSON.parse(JSON.stringify(board));
