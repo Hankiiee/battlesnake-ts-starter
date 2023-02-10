@@ -1,4 +1,5 @@
-import { coordInDirection, isOutside, isSnakePart } from "../functions/BoardFunctions";
+import { closestFood, coordInDirection, distance, isOutside, isSnakePart } from "../functions/BoardFunctions";
+import { reachableCells } from "../functions/ReachableCells";
 import { Direction, Outcome } from "../types/strategy";
 import { DirectionResult, Strategy } from "../types/strategyTypes";
 import { GameState, MoveResponse } from "../types/types";
@@ -13,6 +14,7 @@ export class BasicStrategy implements Strategy {
       const nextCoord = coordInDirection(head, direction);
       const isOutofBounds = isOutside(nextCoord, gameState.board);
       const dontTreadOnSelf = isSnakePart(nextCoord, gameState.board);
+      const food = closestFood(nextCoord, gameState.board); 
       // Check that you don't collide with any snake
       // Add more checks if needed
       
@@ -20,10 +22,13 @@ export class BasicStrategy implements Strategy {
       if (isOutofBounds || dontTreadOnSelf) {
         outcome = Outcome.DEAD
       }
-
+      let otherData = 0
+      otherData += reachableCells(gameState.board, nextCoord);
+      if (food)
+      otherData -= distance(nextCoord, food);
       // Collect data to use for sorting
 
-      return { direction, outcome, otherData: 0 };
+      return { direction, outcome, otherData };
     });
 
     // Filter out all safe moves
