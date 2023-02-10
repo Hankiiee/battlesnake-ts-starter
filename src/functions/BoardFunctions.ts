@@ -20,6 +20,32 @@ export function isSnakePart(coord: Coord, board: Board): boolean {
   });
 }
 
+export function getEnemySnakes(board: Board): Battlesnake[] {
+  return board.snakes;
+}
+
+export function getEnemySnakeLength(board: Board): number[] {
+  const lengths: number[] = []
+  board.snakes.forEach(snake => {
+    lengths.push(snake.length)
+  });
+  return lengths; 
+}
+export function fuckAroundAndFindOut(mySnake: Battlesnake, nextCoord: Coord, board: Board): number {
+  let trigger: number = 0;
+  getEnemySnakes(board).forEach(snake => {
+    if (!sameCoord(mySnake.head, snake.head)){
+      if(distance(nextCoord,snake.head) == 1){
+        if(snake.length > mySnake.length)
+          trigger = 1000;
+        else 
+          trigger =-1000;
+      }
+    };
+  });
+  return trigger; 
+}
+
 export function isOutside(coord: Coord, board: Board): boolean {
   return coord.y < 0 || coord.x < 0 || coord.x >= board.width || coord.y >= board.height;
 }
