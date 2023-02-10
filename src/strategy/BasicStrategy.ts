@@ -27,7 +27,7 @@ export class BasicStrategy implements Strategy {
       if (food){
         otherData -= distance(nextCoord, food);
       }
-      // otherData += fuckAroundAndFindOut(nextCoord, gameState.you, gameState.board);
+      otherData += fuckAroundAndFindOut(nextCoord, gameState.you, gameState.board);
       otherData += boxing(nextCoord, gameState.you, gameState.board);
       // Collect data to use for sorting
       
