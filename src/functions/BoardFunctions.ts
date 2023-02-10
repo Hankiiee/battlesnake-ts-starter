@@ -75,7 +75,7 @@ export function boxing(nextCoord: Coord, mySnake: Battlesnake, board: Board): nu
 }
 
 export function fakeBoard(nextCoord: Coord, mySnake: Battlesnake, board: Board): Board{
-  const newBoard = board;
+  const newBoard = JSON.parse(JSON.stringify(board));
   const snakes: Battlesnake[] = [];
   board.snakes.forEach(snake => {
     if(!sameCoord(snake.head, mySnake.head)){
